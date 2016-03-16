@@ -534,6 +534,41 @@ stream
 	testStreamerWithOutput(t, "TestStream_SimpleMR", script, 15*time.Second, er, nil, false)
 }
 
+func TestStream_EmptyBatch(t *testing.T) {
+
+	var script = `
+var data = stream
+	.from().measurement('status')
+	.window()
+		.period(10s)
+		.every(10s)
+
+var ok = data.where(lambda: "status" == 'ok').count('value')
+var fail = data.where(lambda: "status" == 'fail').count('value')
+
+ok.join(fail).as('ok', 'fail')
+	.streamName('fail_percent')
+	.eval(lambda: float("fail.count") / float("fail.count" + "ok.count"))
+		.as('value')
+	.httpOut('TestStream_EmptyBatch')
+`
+	er := kapacitor.Result{
+		Series: imodels.Rows{
+			{
+				Name:    "fail_percent",
+				Tags:    nil,
+				Columns: []string{"time", "value"},
+				Values: [][]interface{}{[]interface{}{
+					time.Date(1971, 1, 1, 0, 0, 10, 0, time.UTC),
+					0.0,
+				}},
+			},
+		},
+	}
+
+	testStreamerWithOutput(t, "TestStream_EmptyBatch", script, 15*time.Second, er, nil, false)
+}
+
 func TestStream_BatchGroupBy(t *testing.T) {
 
 	var script = `

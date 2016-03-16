@@ -112,10 +112,6 @@ func (n *InfluxQLNode) runStreamInfluxQL() error {
 
 func (n *InfluxQLNode) runBatchInfluxQL() error {
 	for b, ok := n.ins[0].NextBatch(); ok; b, ok = n.ins[0].NextBatch() {
-		// Skip empty batches
-		if len(b.Points) == 0 {
-			continue
-		}
 
 		// Create new base context
 		c := baseReduceContext{
@@ -128,7 +124,15 @@ func (n *InfluxQLNode) runBatchInfluxQL() error {
 			time:       b.TMax,
 			pointTimes: n.n.PointTimes,
 		}
-		createFn, err := n.getCreateFn(b.Points[0].Fields[c.field])
+		var value interface{}
+		if len(b.Points) > 0 {
+			value = b.Points[0].Fields[c.field]
+		} else {
+			// If we have no points get the float version of the function
+			value = float64(0)
+		}
+		createFn, err := n.getCreateFn(value)
+
 		if err != nil {
 			return err
 		}

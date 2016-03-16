@@ -74,12 +74,11 @@ func (w *WhereNode) runWhere(snapshot []byte) error {
 				}
 			}
 			w.timer.Stop()
-			if len(b.Points) > 0 {
-				for _, child := range w.outs {
-					err := child.CollectBatch(b)
-					if err != nil {
-						return err
-					}
+			// Note it is possible and valid to collect an empty batch
+			for _, child := range w.outs {
+				err := child.CollectBatch(b)
+				if err != nil {
+					return err
 				}
 			}
 		}

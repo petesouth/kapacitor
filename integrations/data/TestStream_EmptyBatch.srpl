@@ -1,0 +1,36 @@
+dbname
+rpname
+status,status=ok value=1 0000000001
+dbname
+rpname
+status,status=ok value=1 0000000002
+dbname
+rpname
+status,status=ok value=1 0000000003
+dbname
+rpname
+status,status=ok value=1 0000000004
+dbname
+rpname
+status,status=ok value=1 0000000005
+dbname
+rpname
+status,status=ok value=1 0000000006
+dbname
+rpname
+status,status=ok value=1 0000000007
+dbname
+rpname
+status,status=ok value=1 0000000008
+dbname
+rpname
+status,status=ok value=1 0000000009
+dbname
+rpname
+status,status=ok value=1 0000000010
+dbname
+rpname
+status,status=ok value=1 0000000011
+dbname
+rpname
+status,status=fail value=1 0000000012
