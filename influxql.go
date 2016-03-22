@@ -133,6 +133,7 @@ func (n *InfluxQLNode) runBatchInfluxQL() error {
 			return err
 		}
 
+		n.logger.Println("D! batch", b)
 		context := createFn(c)
 		context.AggregateBatch(&b)
 		err = n.emit(context)
