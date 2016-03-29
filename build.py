@@ -254,7 +254,7 @@ def get_system_arch():
 def get_system_platform():
     if sys.platform.startswith("linux"):
         return "linux"
-    elif sys.platform.startsiwth("freebsd"):
+    elif sys.platform.startswith("freebsd"):
         return "freebsd"    
     else:
         return sys.platform
